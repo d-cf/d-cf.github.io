@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-05-29T07:43:26.903Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2021/05/29/ADS-chapter2/"/>
+    <id>http://example.com/2021/05/29/ADS-chapter2/</id>
+    <published>2021-05-29T06:25:20.158Z</published>
+    <updated>2021-05-29T07:43:26.903Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Red-and-Black-Trees"><a href="#Red-and-Black-Trees" class="headerlink" title="Red and Black Trees"></a>Red and Black Trees</h2><p>Target: Balanced binary search tree</p><p>结构：一般键值，左孩子指针、右孩子指针、父指针，颜色域。</p><p>Definition: binary search tree</p><p>​                    (1) every node is either red or black</p><p>​                    (2)root is black</p><p>​                    (3) every leaf is black</p><p>​                    (4) if a node is red,then both its children are black;</p><p>​                    (5)For each node,all simple paths from the node to descendant leaves contain the same number of black nodes.</p><p>Definition: The black-height of any node x—-&gt;(bh(x)), is the number of black nodes on any simple path from x(x is not included) down to a leaf. bh(Tree)=bh(root).</p><p>Lemma :A red-black tree with N internal nodes has height at most 2ln(N+1).</p><p>Proof: (1) For any node x,sizeof(x)&gt;=2<sup>bh(x)</sup> -1(归纳法证明)Prove by induction.</p><p>​            if h(x)=0,x is NULL —-&gt; sizeof(x)=0 √</p><p>​            suppose it is true for all x with h(x)&lt;k.</p><p>​            For x with h(x)=k+1,bh(child)=bh(x)-1 or bh(x)</p><p>​            Since h(child)&lt;=k ,sizeof(child)&gt;=2<sup>bh(child)</sup> -1&gt;=2<sup>bh(x)-1</sup> -1</p><p>​            hence sizeof(x)=2*sizeof(child)+1&gt;=2<sup>bh(x)</sup> -1.</p><p>Then sizeof(root)&gt;=2<sup>bh(x)</sup> -1,即N&gt;=2<sup>bh(x)</sup> -1,bh(tree)&lt;=log(N+1)</p><p>if we can prove bh(tree)&gt;=h(tree)/2, then we can prove h(tree)&lt;=2*log(N+1).</p><p>and bh(tree)&gt;=h(tree) is easy to prove.</p><p>Insert</p><p>1、红色节点插入到黑色节点下，直接插入即可。</p><p>2、红色节点插入到红色节点下，插入之后需要交换父节点与祖父节点的颜色，红—-&gt;黑，黑—-&gt;红</p><p>当然这样做会导致祖父节点变为红色，当祖父节点的父节点也为红色时会产生冲突，也就是情况三。</p><p>3、（情况见2）具体情况说不清，见ADS的PPT</p><p>对称情况同上</p><p>插入时间复杂度 T=O(h)=O(lnN).</p><p>Deletion</p><p>1、Delete a leaf node: Reset its parent link to NULL</p><p>2、Delete a degree 1 node: Replace the node by its single child.</p><p>3、Delete a degree 2 node:</p><p>​    (1)Replace the node by the largest one in its left subtree or the smallest one in its right subtree.(keep the color)</p><p>​    (2)Delete the replacing node from the subtree.</p><p>(以上操作和binary tree的删除操作相同)</p><p>​            </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Red-and-Black-Trees&quot;&gt;&lt;a href=&quot;#Red-and-Black-Trees&quot; class=&quot;headerlink&quot; title=&quot;Red and Black Trees&quot;&gt;&lt;/a&gt;Red and Black Trees&lt;/h2&gt;&lt;p&gt;Ta</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2021/05/28/ADS-chapter1/"/>
+    <id>http://example.com/2021/05/28/ADS-chapter1/</id>
+    <published>2021-05-28T07:42:35.568Z</published>
+    <updated>2021-05-28T11:30:42.433Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="ADS-chapter1"><a href="#ADS-chapter1" class="headerlink" title="ADS  chapter1"></a><center>ADS  chapter1</center></h1><h3 id="AVL-Tree"><a href="#AVL-Tree" class="headerlink" title="AVL  Tree"></a><left>AVL  Tree</left></h3><p>Target: speed up searching (with insertion and deletion)</p><p>​        (为什么不用binary search tree?虽然binary search tree的所有操作时间复杂度均为O(logN),即为与树高成正比，但是当最坏情况时，树高可能为O(N),使得binary search tree 的效果很不理想)</p><p>Definition: An empty binary tree is height balanced. If T is a nonempty binary tree with T <sub>L</sub> and T<sub>R</sub> as its left and right subtree,then T is height balanced if and only if</p><p>(1)T<sub>L</sub> and T<sub>R</sub> are height balanced,and </p><p>(2)| h<sub>L</sub> - h<sub>R</sub> |&lt;=1 where h<sub>L</sub> and h<sub>R</sub> are the heights of T<sub>L</sub> and T<sub>R</sub> ,respectively.</p><p>(The balanced factor BF(node)=h<sub>L</sub> - h<sub>R</sub> .In an AVL tree,BF(node)=-1 1 or 0)</p><p>(注: height of an empty tree is defined to be -1)</p><p>​        AVL Tree 最重要的特性或者说需要掌握的是旋转，有single rotation还有double rotation,首先需要找到不平衡的节点（若有多个不平衡的节点，找最下面的），也就是|BF|&gt;1的点，然后看从该点到造成麻烦的节点是怎样走的，如果是LL或者RR，只需要一次右旋或者左旋即可；如果是LR，则先对中间节点进行一次左旋，转成LL，然后进行右旋；如果是RL，则先对中间节点进行一次右旋，变成RR，然后进行左旋即可。</p><p>​        AVL Tree本身就是一个binary search tree，所以说AVL Tree的各项操作也是和树的高度成正比的，T<sub>p</sub> =O(h)，那么height为多少？O(logN),证明如下：</p><p>​        Let n<sub>h</sub> be the minimum number of nodes in a height balanced tree of height h. Then the tree has a relation n<sub>h</sub> =n<sub>h-1</sub> + n<sub>h-2</sub> +1(looks like Fibonacci numbers),n<sub>h</sub> =F<sub>h+2</sub> -1, F<sub>i</sub> ~(k)<sup>i</sup></p><p>(k为常数),所以n<sub>h</sub> ~(k)<sup>h</sup> ,得h=logn, height=O(logn).得证。</p><h3 id="Splay-Tree"><a href="#Splay-Tree" class="headerlink" title="Splay Tree"></a><left>Splay Tree</left></h3><p>Target: any M consecutive tree operations starting from an empty tree take at most O(MlogN) time.(AVL tree is a Splay tree but a Splay tree may be not an AVL tree).</p><p>Idea: after the node is accessed, it is pushed to the root by aseries of AVL tree rotations.</p><p>(查询、插入均如此)</p><p>For any nonroot node X, denote its parent by P and grandparent by G.</p><p>case 1:P is the root—–&gt; Rotate X and P</p><p>case 2:P is not the root ——-&gt;zigzag : 两次旋转,P和X进行一次旋转，之后X和G再进行一次旋转.</p><p>zigzig: 一次旋转,P和G直接进行一次旋转即可</p><p>(删除)</p><p>Step 1:Find X(after that,X will be the root)</p><p>Step 2: Remove X(after that there will be two subtrees T<sub>L</sub> T<sub>R</sub> )</p><p>Step 3: FindMax(T<sub>L</sub> );(左子树得最大元素会成为左子树得新根，这个子树一定没有右子树)</p><p>Step 4: Make T<sub>R</sub> the right child of the root of T<sub>L</sub> </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ADS-chapter1&quot;&gt;&lt;a href=&quot;#ADS-chapter1&quot; class=&quot;headerlink&quot; title=&quot;ADS  chapter1&quot;&gt;&lt;/a&gt;&lt;center&gt;ADS  chapter1&lt;/center&gt;&lt;/h1&gt;&lt;h3 id=&quot;AVL-Tr</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2021/05/28/hello-world/"/>
+    <id>http://example.com/2021/05/28/hello-world/</id>
+    <published>2021-05-28T06:02:38.815Z</published>
+    <updated>2021-05-28T06:02:38.815Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
