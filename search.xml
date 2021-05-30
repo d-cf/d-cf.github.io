@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>ADS chapter3 B+ Tree</title>
+      <link href="2021/05/30/ADS-chapter3/"/>
+      <url>2021/05/30/ADS-chapter3/</url>
+      
+        <content type="html"><![CDATA[<h2 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B+ Tree"></a>B+ Tree</h2><p>Definition: A B+ tree of order M is a tree with the following structural properties:</p><p>(1) The root is either a leaf or has between 2 and M children.</p><p>(2) All nonleaf nodes (except the root) have between M/2 (取上界)and M children.</p><p>(3) All leaves are at the same depth.(Assume each nonroot leaf also has between M/2 (取上界) and M children )</p><p>search、insert操作原理比较简单，不再过多重复</p><p>先粘贴insert的伪码：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Btree  Insert ( ElementType X,  Btree T ) </span><br><span class="line">&#123; </span><br><span class="line">Search from root to leaf for X and find the proper leaf node;</span><br><span class="line"> Insert X;</span><br><span class="line"> while ( this node has M+1 keys ) &#123;</span><br><span class="line"> split it into 2 nodes with (M+1)/2(取上界) and (M+1)/2(取下界) keys, respectively;</span><br><span class="line"> if (this node is the root)</span><br><span class="line"> create a new root with two children;</span><br><span class="line"> check its parent;</span><br><span class="line"> &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure><p>Depth(M,N)=O(log<sub>M/2</sub> N)</p><p>T(M,N)=O((M/logM)logN)</p><p>T<sub>Find</sub> (M,N)=O(logN)(因为find操作的时间复杂度只依赖于该点的深度即Depth(M,N)).</p><p>delete的操作:(可能不是重点，因为mooc上没讲，但是还是了解一下比较好~)。</p><p>1）删除叶子结点中对应的key。删除后若结点的key的个数大于等于M/2 取上界，删除操作结束,否则执行第2步。</p><p>2）若兄弟结点key有富余（大于M/2(取上界)），向兄弟结点借一个记录，同时用借到的key替换父结（指当前结点和兄弟结点共同的父结点）点中的key，删除结束。否则执行第3步。</p><p>3）若兄弟结点中没有富余的key,则当前结点和兄弟结点合并成一个新的叶子结点，并删除父结点中的key（父结点中的这个key两边的孩子指针就变成了一个指针，正好指向这个新的叶子结点），将当前结点指向父结点（必为索引结点），执行第4步（第4步以后的操作和B树就完全一样了，主要是为了更新索引结点）。</p><p>4）若索引结点的key的个数大于等于M/2(取上界)，则删除操作结束。否则执行第5步</p><p>5）若兄弟结点有富余，父结点key下移，兄弟结点key上移，删除结束。否则执行第6步</p><p>6）当前结点和兄弟结点及父结点下移key合并成一个新的结点。将当前结点指向父结点，重复第4步。</p><p>***注意，通过B+树的删除操作后，索引结点中存在的key，不一定在叶子结点中存在对应的记录。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Demo </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ADS chapter1 AVL tree and Splay tree</title>
       <link href="2021/05/29/ADS-chapter1/"/>
       <url>2021/05/29/ADS-chapter1/</url>
