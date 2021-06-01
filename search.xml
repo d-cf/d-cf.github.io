@@ -4,6 +4,38 @@
   
     
     <entry>
+      <title>ADS chapter4 Leftist Heaps and Skew Heaps</title>
+      <link href="2021/06/01/ADS-chapter4/"/>
+      <url>2021/06/01/ADS-chapter4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Leftist-Heaps"><a href="#Leftist-Heaps" class="headerlink" title="Leftist Heaps"></a>Leftist Heaps</h2><p>target: speed up merging in O(N).</p><p>​        普通堆的特性：structure property + order property（储存在binary tree中，而且是有序的，上面的都比下面的小或者大）</p><p>​        merge two heaps if we only use the original heap structure: O(N).</p><p>​        这是确定的N，而不是O(N),因为copy所有的节点需要N，而下滤操作也需要N，这样就是N了</p><p>​        if we use pointers ,we will slow down all the operations. (这是没有办法的事，想降低merge的时间复杂度就势必会用指针，而指针操作会降低速度，权衡之下左式堆用了指针)，总的来讲，从算法上说左式堆和普通的二叉堆相比，insert、deleteMin的时间复杂度没有变化，都是O(logN),但是降低了Merge的时间复杂度从N变为了O(logN),只是算法理论上。而建堆操作的话，普通的是O(N),左式堆也能算，就是把每个单个节点看成一个优先队列（堆），然后merge，然后又得到一些两个节点的堆，再merge，然后得到一些4个节点的堆，再merge……，（最后是多少我懒得算，但是一定能算，偷偷告诉你我算出来是O(N),和普通的堆一样……)。所以从算法角度上讲左式堆更加好。</p><p>​    order property–the same</p><p>​    structure property–binary tree,but unbalanced.</p><p>​    Definition: The null path length,Npl(X), of any node X is the length of the shortest path from X to a node without two children. Define Npl(NULL)=-1.</p><p>Note: Npl(X)=min{Npl(C)+1 for all C as children of X}</p><p>​    Definition: The Leftist heap property is that for every node X in the heap, the null path length of the left child is at least as large as that of the right child.</p><p>​    Theorem: A Leftist tree with r nodes on the right path must have at least 2<sup>r</sup> -1 nodes.</p><p>​    How long is the right path of a Leftist tree of N nodes?—–&gt;at most log(N+1)==O(logN)</p><p>​    If we can perform all the work on the right path,which is guaranteed to be short.</p><p>​    trouble maker: insert and merge(我觉得主要是merge是N的操作，而在普通的堆中insert的操作是O(logN))(insert is merely a special case of merging)</p><h4 id="Declaration"><a href="#Declaration" class="headerlink" title="Declaration:"></a>Declaration:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct TreeNode&#123;</span><br><span class="line">ElementType Element;</span><br><span class="line">PriorityQueue Left;</span><br><span class="line">PriorityQueue Right;</span><br><span class="line">int Npl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Merge-recusive-version"><a href="#Merge-recusive-version" class="headerlink" title="Merge(recusive version)"></a>Merge(recusive version)</h4><p>Step 1: Merge(H1-&gt;Right,H2)</p><p>Step 2: Attach(H2,H1-&gt;Right)</p><p>Step 3: Swap(H1-&gt;Right,H1-&gt;Left)</p><p>(if necessary)</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue Merge(PriorityQueue H1,PriorityQueue H2)&#123;</span><br><span class="line">if(H1==NULL)</span><br><span class="line">return H2;</span><br><span class="line">if(H2==NULL)</span><br><span class="line">return H1;</span><br><span class="line">if(H1-&gt;Element&lt;H2-&gt;Element) return Merge1(H1,H2);</span><br><span class="line">else return Merge1(H2,H1);</span><br><span class="line">&#125;</span><br><span class="line">PriorityQueue Merge1(PriorityQueue H1,PriorityQueue H2)&#123;</span><br><span class="line">if(H1-&gt;Left==NULL)</span><br><span class="line">H1-&gt;Left=H2;</span><br><span class="line">else&#123;</span><br><span class="line">H1-&gt;Right=Merge1(H1-&gt;Right,H2);</span><br><span class="line">if(H1-&gt;Left-&gt;Npl&lt;H1-&gt;Right-&gt;Npl)</span><br><span class="line">SwapChildren(H1);</span><br><span class="line">H1-&gt;Npl=H1-&gt;Right-&gt;Npl+1;</span><br><span class="line">&#125;</span><br><span class="line">return H1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>​    T=O(log(N))</p><p>从递归的形式上是看不出来的，建议从非递归形式上看，非递归形式也有助于做一些题目，一定要看！（见ppt，在这里无法像ppt一样一步步来）</p><h4 id="DeleteMin"><a href="#DeleteMin" class="headerlink" title="DeleteMin"></a>DeleteMin</h4><p>​    Step 1:delete the root;</p><p>​    Step 2: Merge the two subtrees</p><p>T<sub>p</sub> =O(logN) easy to think.000000000000000000</p><p>​    </p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Demo </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="2021/05/31/NP%20problems/"/>
+      <url>2021/05/31/NP%20problems/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ADS chapter3 B+ Tree</title>
       <link href="2021/05/30/ADS-chapter3/"/>
       <url>2021/05/30/ADS-chapter3/</url>
